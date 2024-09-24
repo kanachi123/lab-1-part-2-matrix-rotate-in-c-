@@ -80,3 +80,5 @@ int main() {
     m.printMatrix();
     m.rotateMatrix();
 }
+
+//Վահագն Ղազարյան
