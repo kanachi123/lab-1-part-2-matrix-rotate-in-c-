@@ -1,0 +1,113 @@
+#include <iostream>
+using namespace std;
+template<typename T>
+struct ListNode
+{
+    T val;
+    ListNode* next;
+    ListNode(T _val) : val(_val), next(nullptr) {}
+};
+
+template<typename T>
+struct List
+{
+    ListNode<T>* firstNode;
+    ListNode<T>* lastNode;
+    
+    List() : firstNode(nullptr), lastNode(nullptr) {}
+
+    bool isEmpty()
+    {
+        return firstNode == nullptr;
+    }
+
+    void push_back(T _val)
+    {
+        ListNode<T>* p = new ListNode<T>(_val);
+        
+        if (isEmpty()) 
+        {
+            firstNode = p;
+            lastNode = p;
+        } 
+        else 
+        {
+            lastNode->next = p;
+            lastNode = p;
+        }
+    }
+    
+    inline ListNode<T>* getFirstNode(){
+        return firstNode;
+    }
+    
+    
+    inline ListNode<T>* getLastNode(){
+        return lastNode;
+    }
+
+    void print() 
+    {
+        if (isEmpty()) 
+        {
+            return;
+        }
+        
+        ListNode<T>* p = firstNode;
+        std::cout << p->val;
+        p = p->next;
+
+        while (p != nullptr) 
+        {
+            std::cout << "->" << p->val;
+            p = p->next;
+        }
+        
+        std::cout << std::endl;
+    }
+};
+
+int main() 
+{
+    List<int> l1,l2,l3;
+    size_t m;
+    
+    cout<<"list size"<<endl;
+    cin>>m;
+    
+    for (size_t i = 0; i < m; i++)
+    {
+        l1.push_back(rand()%9);
+        l2.push_back(rand()%9);
+    }
+    {
+    
+    	ListNode<int>* p1=l1.getFirstNode();
+    	ListNode<int>* p2=l2.getFirstNode();
+    	
+    	int curr = 0;
+    	for(size_t i = 0;i<m;i++)
+    	{
+    		int tmp = 	p1->val+p2->val+curr;
+    		if(tmp/10==0){
+    		    l3.push_back(tmp);
+    		    curr = 0;
+    		    
+    		}
+    		else
+    		{
+    		    l3.push_back(tmp%10);
+    		    curr++;
+    		}
+    		p1=p1->next;
+    		p2=p2->next;
+        
+    	}
+    }
+    
+    l1.print();
+    l2.print();
+    l3.print();
+
+    return 0;
+}
