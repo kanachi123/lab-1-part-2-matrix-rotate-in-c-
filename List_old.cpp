@@ -1,6 +1,7 @@
 #include <iostream>
 
-class ListNode {
+class ListNode 
+{
 public:
     ListNode(const double data, ListNode* next = nullptr);
     double _data;
@@ -11,6 +12,7 @@ ListNode::ListNode(const double data, ListNode* next) : _data(data), _nextPtr(ne
 
 class List {
 public:
+    
     List();
     ~List();
     void insertAtFront(const double data);
@@ -19,41 +21,26 @@ public:
     bool removeFromBack(double& data);
     bool isEmpty() const;
     void print() const;
-    size_t getCount()const;
+    int _count = 0;
 
 private:
     ListNode* createNode(const double data) const;
     ListNode* _firstPtr;
     ListNode* _lastPtr;
-    size_t _count = 0;
 };
 
 List::List() : _firstPtr(nullptr), _lastPtr(nullptr) {}
 
 List::~List() {
-    while (!isEmpty()) {
+    while (!isEmpty()) 
+    {
         ListNode* temp = _firstPtr;
         _firstPtr = _firstPtr->_nextPtr;
         delete temp;
     }
 }
-size_t List::getCount()const{
-    return _count;
-}
 
 void List::insertAtFront(const double data) {
-    ListNode* newNode = createNode(data);
-    if (isEmpty()) {
-        _firstPtr = _lastPtr = newNode;
-    }
-    else {
-        newNode->_nextPtr = _firstPtr;
-        _firstPtr = newNode;
-    }
-    _count++;
-}
-
-void List::insertAtBack(const double data) {
     ListNode* newNode = createNode(data);
     if (isEmpty()) 
     {
@@ -61,47 +48,55 @@ void List::insertAtBack(const double data) {
     }
     else 
     {
+        newNode->_nextPtr = _firstPtr;
+        _firstPtr = newNode;
+        _count++;
+    }
+}
+
+void List::insertAtBack(const double data) {
+    ListNode* newNode = createNode(data);
+    if (isEmpty()) {
+        _firstPtr = _lastPtr = newNode;
+    }
+    else {
         _lastPtr->_nextPtr = newNode;
         _lastPtr = newNode;
+        _count++;
     }
-    _count++;
 }
 
 bool List::removeFromFront(double& data) {
     if (isEmpty()) {
-        _count = 0;
         return false;
     }
-    else {
+    else 
+    {
         ListNode* temp = _firstPtr;
         data = _firstPtr->_data;
-        if (_firstPtr == _lastPtr) {
+        if (_firstPtr == _lastPtr) 
+        {
             _firstPtr = _lastPtr = nullptr;
-            _count = 1;
         }
-        else {
+        else 
+        {
             _firstPtr = _firstPtr->_nextPtr;
-            _count--;
         }
         delete temp;
+        _count--;
         return true;
     }
 }
 
 bool List::removeFromBack(double& data) {
-    if (isEmpty()) 
-    {
-        _count = 0;
+    if (isEmpty()) {
         return false;
     }
     else {
         ListNode* temp = _firstPtr;
         if (_firstPtr == _lastPtr) {
             data = _firstPtr->_data;
-            delete _firstPtr;
             _firstPtr = _lastPtr = nullptr;
-            
-            _count = 0;
         }
         else {
             while (temp->_nextPtr != _lastPtr) {
@@ -111,8 +106,8 @@ bool List::removeFromBack(double& data) {
             temp->_nextPtr = nullptr;
             delete _lastPtr;
             _lastPtr = temp;
-            _count--;
         }
+        _count--;
         return true;
     }
 }
@@ -136,25 +131,6 @@ void List::print() const {
     }
 }
 
-bool List::insertAfterIndex(const size_t idx,const double value){
-    
-    ListNode* _ptr = _firstPtr + idx;
-    ListNode* tmp = _ptr + 1;
-    int temp = value;
-    
-    
-    while(tmp != _lastPtr)
-    {
-        *_ptr = temp;
-        temp = *tmp;
-        _ptr++;
-        tmp++;
-    }
-    return true;
-}
-
-
-
 ListNode* List::createNode(const double data) const {
     return new ListNode(data);
 }
@@ -165,14 +141,13 @@ int main() {
     myList.insertAtFront(10);
     myList.insertAtFront(20);
     myList.insertAtBack(30);
-    
-    myList.insertAtBack(80);
-    myList.insertAtBack(50);
     myList.print();
+    
+    std::cout<<" "<<myList._count<<std::endl;
 
     double removedData;
     if (myList.removeFromFront(removedData)) {
-        std::cout << "Removed data from the front: " << removedData << std::endl;
+        std::cout << "Removed data from the front: " << removedData<< std::endl;
     }
     else {
         std::cout << "List is empty." << std::endl;
@@ -181,17 +156,13 @@ int main() {
     myList.print();
 
     if (myList.removeFromBack(removedData)) {
-        std::cout << "Removed data from the back: " << removedData <<"\ncount = "<<myList.getCount()<< std::endl;
+        std::cout << "Removed data from the back: " << removedData << std::endl;
     }
     else {
         std::cout << "List is empty." << std::endl;
     }
-    
-    insertAfterIndex(2,0.5);
 
     myList.print();
 
     return 0;
 }
-
-
